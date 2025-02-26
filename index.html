@@ -32,24 +32,25 @@
 
 <script>
 
-    ///////////////////////////////////////////////////////////////////
-    // Game variables
-	//The object that will hold each individual element on the screen
-	///////////////////////////////////////////////////////////////////
-    var myGamePiece; 
+		///////////////////////////////////////////////////////////////////
+		// Game variables
+		//The object that will hold each individual element on the screen
+		///////////////////////////////////////////////////////////////////
+    	var myGamePiece; 
 	
-    var myPillars = [];
-    var myLevel;
-	///////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////
+    	var myPillars = [];
+    	var myLevel;
+		///////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////
     
 	
-	///////////////////////////////////////////////////////////////////
-    // Function to start the game
-	///////////////////////////////////////////////////////////////////
-    function startGame() {
+		///////////////////////////////////////////////////////////////////
+		// Function to start the game
+		///////////////////////////////////////////////////////////////////
+    	function startGame() {
 	
-		var squareSize = 5
+		var squareSize = 30
+		
         myGamePiece = new component(squareSize, squareSize, 10, 0); // Player character
 		
         myGamePiece.gravity = 0.05; // Apply gravity
@@ -166,10 +167,11 @@
             var othertop = otherobj.y;
             var otherbottom = otherobj.y + otherobj.height;
 			
-			//
-            //var crash = !((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright));
-            //return crash;
-        }//update: nested Function END
+			
+            var crash = !((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright));
+            return crash;
+			
+       }//update: nested Function END
 		
 		
     }//component Function END
@@ -180,20 +182,15 @@
     // Function to update game area (main game loop)
     function updateGameArea() {
 	
-        //var x, height, gap;
-
         var level = 1;
-		
-		var numOfPillars= 3;
 
 		var PillarWidth =30;
 		
 		var height = Math.floor(Math.random() * (180) + 20);
-        var gap = Math.floor(Math.random() *   (150) + 50);
+        var gap = Math.floor(Math.random() * (150) + 50);
 		
 		//Increased level for every 1000 frames that pass
         level += Math.floor(myGameArea.frameNo / 1000);
-		
 		
 
         // Check for collisions with Pillars
@@ -204,18 +201,15 @@
         }
 		
 		
-        
+
 		// Clear the screen
         myGameArea.clear(); 
         myGameArea.frameNo += 1;
 		x = myGameArea.canvas.width; 
 		
 		
-
-		
         // Generate new Pillars over time
-        if (myGameArea.frameNo == 1 || myGameArea.frameNo /((myGameArea.canvas.width/numOfPillars)/level)% 1 == 0) {
-		//if (Math.floor((myGameArea.frameNo%300) ==0)) {
+        if (myGameArea.frameNo == 1 || everyinterval(50)) {
 		
 			// Top Pillar
             myPillars.push(new component(PillarWidth, height, myGameArea.canvas.width, 0));
@@ -226,17 +220,16 @@
 
         // Move Pillars to the left
         for (i = 0; i < myPillars.length; i++) {
-            myPillars[i].x += -1 * level;
+            myPillars[i].x += -5;
             myPillars[i].update();
         }
+
 
 		//Update score and player position
         myLevel.text = "Level: " + level;
         myLevel.update();
         myGamePiece.newPos();
         myGamePiece.update();
-		
-		
 		
     }//updateGameArea  Function END
 
@@ -253,6 +246,13 @@
         myGamePiece.gravitySpeed = 0;
     }//accelerate  Function END
 	
+	
+		// Adjust gravity when buttons are pressed
+	//////////////////////////////////////////
+	function everyinterval(n) {
+    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+    return false;
+	}
 	
 </script>
 
