@@ -209,7 +209,7 @@
 		
 		
         // Generate new Pillars over time
-        if (myGameArea.frameNo == 1 || everyinterval(50)) {
+        if (myGameArea.frameNo == 1 || everyinterval(150)) {
 		
 			// Top Pillar
             myPillars.push(new component(PillarWidth, height, myGameArea.canvas.width, 0));
@@ -220,7 +220,7 @@
 
         // Move Pillars to the left
         for (i = 0; i < myPillars.length; i++) {
-            myPillars[i].x += -5;
+            myPillars[i].x += -1;
             myPillars[i].update();
         }
 
